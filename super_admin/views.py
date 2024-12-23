@@ -992,7 +992,7 @@ def get_all_orders(role_id=None, user_id=None, order_status=None):
         result_dict['order_id'] = str(result_dict['order_id'])
         result_dict['past_order_id'] = str(result_dict['past_order_id']) if result_dict['past_order_id']!=None else ''
         results.append(result_dict)
-
+    
     return results
 
 
@@ -3449,9 +3449,11 @@ def exportOrderToCsv(request):
             temp_dict['Materiael'] = global_dict['order_item_response_list'][0]['order_item_collection_barcode']
             temp_dict["GraiDirection"] = ""
             if (order_trans['keep_flow_height'] == global_dict['order_item_response_list'][0]['order_item_texture']):
-                temp_dict["GraiDirection"] = "L"
+                #temp_dict["GraiDirection"] = "L"
+                temp_dict["GraiDirection"] = "1"
             elif(order_trans['keep_flow_width'] == global_dict['order_item_response_list'][0]['order_item_texture']):
-                temp_dict["GraiDirection"] = "W"
+                #temp_dict["GraiDirection"] = "W"
+                temp_dict["GraiDirection"] = "2"
             # print("order_item_collection_barcode=",global_dict['order_item_response_list'][0]['order_item_collection_barcode'])
             collection_queryset = Collection.objects.filter(collection_barcode=global_dict['order_item_response_list'][0]['order_item_collection_barcode']).first()
             c_dic = model_to_dict(collection_queryset)
@@ -3489,8 +3491,11 @@ def exportOrderToCsv(request):
                     li_ = [card['card_hinge'][0]['hinge_order_xp1'], card['card_hinge'][0]['hinge_order_xp2'], card['card_hinge'][0]['hinge_order_xp3'], card['card_hinge'][0]['hinge_order_xp4'], card['card_hinge'][0]['hinge_order_xp5'], card['card_hinge'][0]['hinge_order_xp6']]
                     values_list = [value for value in li_ if value]
                     nh_ = len(values_list)
+                    
                     str___ = ' '.join([f"xp{i}={val}" for i, val in enumerate (values_list,1)])
-                    temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]}"
+                    hinge_order_door_opening_side_ = "2" if card['card_hinge'][0]['hinge_order_door_opening_side'] == "ימין" else "1"
+                    temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]} flip={hinge_order_door_opening_side_}"
+                
                 elif card['card_clap_length'] == 1:
                     temp_dict["PartDrawing"] = f"Type_blum{card['card_clap'][0]['clap_claps_pr']}=1 lo={card['card_clap'][0]['clap_order_lo']} ro={card['card_clap'][0]['clap_order_ro']} to={card['card_clap'][0]['clap_order_bo']}"
             
@@ -3551,9 +3556,11 @@ def exportOrderToCsv(request):
                 
                 if item['order_item_keepflow'] == order_trans['yes']: # if keep flow is yes
                     if (order_trans['keep_flow_height'] == item['order_item_texture']):
-                        temp_dict["GraiDirection"] = "L"
+                        #temp_dict["GraiDirection"] = "L"
+                        temp_dict["GraiDirection"] = "1"
                     elif(order_trans['keep_flow_width'] == item['order_item_texture']):
-                        temp_dict["GraiDirection"] = "W"
+                        #.temp_dict["GraiDirection"] = "W"
+                        temp_dict["GraiDirection"] = "2"
             
             temp_dict["PartL"] = card["card_height"]
             temp_dict["PartW"] = card["card_width"]
@@ -3589,7 +3596,8 @@ def exportOrderToCsv(request):
                     values_list = [value for value in li_ if value]
                     nh_ = len(values_list)
                     str___ = ' '.join([f"xp{i}={val}" for i, val in enumerate (values_list,1)])
-                    temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]}"
+                    hinge_order_door_opening_side_ = "2" if card['card_hinge'][0]['hinge_order_door_opening_side'] == "ימין" else "1"
+                    temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]} flip={hinge_order_door_opening_side_}"
                 elif card['card_clap_length'] == 1:
                     temp_dict["PartDrawing"] = f"Type_blum{card['card_clap'][0]['clap_claps_pr']}=1 lo={card['card_clap'][0]['clap_order_lo']} ro={card['card_clap'][0]['clap_order_ro']} to={card['card_clap'][0]['clap_order_bo']}"
 

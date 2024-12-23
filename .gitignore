@@ -1,5 +1,18 @@
-'super_admin_9 mar.zip' 
-venv/ 
-super_admin_eng_version.zip 
-super_admin.zip 
-media/
+# Ignore compiled Python files
+*.pyc
+
+# Ignore virtual environment directory
+venv/
+
+# Ignore the Django migration directory
+**/migrations/
+
+# Ignore database files
+*.db
+*.sqlite3
+
+# Ignore text editor backup files
+*~
+
+# Ignore environment-specific settings
+.env

@@ -250,7 +250,7 @@ $(document).ready(function(){
                                                                                                                         <div class="md:col-span-4 mt-4">
                                                                                                                             <div>
                                                                                                                                 <label for="nh" class="block font-medium text-gray-700 text-13 mb-2 dark:text-zink-200">${window.page.nh}</label>
-                                                                                                                                <input class="w-full border py-2 px-3 text-13 rounded border-gray-400 placeholder:text-13 focus:border focus:border-gray-400 focus:ring-0 focus:outline-none text-gray-700 dark:bg-transparent placeholder:text-gray-600 dark:border-zink-50 dark:placeholder:text-zink-200 nh_counter_field" data-id="${counter}" required name="nh" type="number" min="1" max="6" id="nh_${counter}">
+                                                                                                                                <input class="w-full border py-2 px-3 text-13 rounded border-gray-400 placeholder:text-13 focus:border focus:border-gray-400 focus:ring-0 focus:outline-none text-gray-700 dark:bg-transparent placeholder:text-gray-600 dark:border-zink-50 dark:placeholder:text-zink-200 nh_counter_field" data-id="${counter}" required name="nh" type="text" id="nh_${counter}">
                                                                                                                             </div>
                                                                                                                         </div>
 
@@ -324,20 +324,25 @@ $(document).ready(function(){
     }//ends subform_generation here
 
 
-    $(document).on('keyup', '.nh_counter_field', function(){
-        console.log("nh_counter_field is working");
+    // $(".nh_counter_field").on("keydown", function(event) { if (event.key === "ArrowUp" || event.key === "ArrowDown") { event.preventDefault(); } });
+    //var nh_counter_field = $('.nh_counter_field').val();
+    $(document).on('keyup', '.nh_counter_field', function(event){
+       
+            console.log("I am working true");
+            let data_id = $(this).attr("data-id");
+            let total_xp = parseInt($(this).val());
+            if ($(this).val() !== "" && total_xp <=6){
 
-        let data_id = $(this).attr("data-id");
-        let total_xp = parseInt($(this).val());
-        if ($(this).val() !== "" && total_xp <=6){
-
-            for (let i=0; i < 6; i++ )
-                $(`.xp${i+1}_div_${data_id}`).hide();
-            
-            for (let i=0; i < total_xp; i++ )
-                $(`.xp${i+1}_div_${data_id}`).show();
-        }
-        
+                for (let i=0; i < 6; i++ )
+                    $(`.xp${i+1}_div_${data_id}`).hide();
+                
+                for (let i=0; i < total_xp; i++ )
+                    $(`.xp${i+1}_div_${data_id}`).show();
+            }else{
+                $(this).val("");
+                for (let i=0; i < 6; i++ )
+                    $(`.xp${i+1}_div_${data_id}`).hide();
+            }
         //console.log(data_id);
         
     });
@@ -2486,6 +2491,12 @@ $(document).ready(function(){
     });
 
 
-    
+// $("input[name=nh]").on("focus", function() {
+//     $(this).on("keydown", function(event) {
+//       if (event.keyCode === 38 || event.keyCode === 40) {
+//         event.preventDefault();
+//       }
+//     });
+//   });
 
 }); //end ready here
