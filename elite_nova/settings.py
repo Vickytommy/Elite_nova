@@ -106,8 +106,8 @@ AUTH_USER_MODEL = 'super_admin.EliteNovaUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'NAME': 'elite_nova',
+        'USER': 'elite_nova',
         'PASSWORD': 'hockey93jweoru932u294u0',
         'HOST': '34.165.7.142',
         'PORT': '5432',
