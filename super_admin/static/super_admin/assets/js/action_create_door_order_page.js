@@ -821,9 +821,8 @@ $(document).ready(function(){
 
                                                 <div class=" md:col-span-4"  style="display:none;" id="upload_file_div_${target_count}">
                                                             <div>
-                                                                <label for="upload_file" class="block font-medium text-gray-700 text-13 mb-2 dark:text-zink-200">${window.page.uploadfile}</label>
+                                                                <label for="upload_file" class="blink block font-medium text-gray-700 text-13 mb-2 dark:text-zink-200">${window.page.uploadfile}</label>
                                                                 <input class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] font-normal leading-[2.15] text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-zink-50 dark:text-zink-200 dark:file:bg-zink-50 dark:file:text-zink-200 dark:focus:border-primary"  type="file" accept=".jpg, .jpeg, .png, .gif"  name="upload_file[]"  id="${target_count}" placeholder="${window.page.uploadfile}"/>
-
                                                                 
                                                             </div>
                                                             <input type="hidden" name="upload_file_tracker[]" class="upload_file_tracker" id="upload_file_tracker_${target_count}" value="0">
@@ -2489,6 +2488,35 @@ $(document).ready(function(){
         // console.log(form_data);
         return false;
     });
+
+    
+    ///////// To add scroll down function /////////
+        const $fileInput = $("#upload_file");
+        console.log('I DID IT ............ ', $fileInput)
+
+        // Customize button and placeholder text
+        const buttonText = "Choose whatever";
+        const placeholderText = "Your file has been chosen";
+      
+        // Use CSS pseudo-element styles for customization
+        $fileInput.css({
+          "--file-button-text": `"${buttonText}"`,
+          "--file-placeholder-text": `"${placeholderText}"`,
+        });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById("upload_file");
+      
+        // Customize the button and placeholder text
+        const buttonText = fileInput.getAttribute("data-button-text") || "Choose file";
+        const placeholderText = fileInput.getAttribute("data-placeholder-text") || "No file chosen";
+      
+        // Update the styling via pseudo-elements for the file input
+        fileInput.style.setProperty("--file-button-text", `"${buttonText}"`);
+        fileInput.style.setProperty("--file-placeholder-text", `"${placeholderText}"`);
+      });
+      
 
 
 // $("input[name=nh]").on("focus", function() {
