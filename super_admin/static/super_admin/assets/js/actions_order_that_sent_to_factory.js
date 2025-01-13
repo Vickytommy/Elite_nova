@@ -62,10 +62,10 @@ $(document).ready(function(){
                                 button_edit = `<a href="${link_to_edit_order_}?order_id=${row.order_id}" class="text-white transition-all duration-300 ease-linear bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:text-white active:bg-blue-600 active:border-blue-600 active:text-white focus:bg-blue-600 focus:border-blue-600 focus:text-white focus:ring focus:ring-blue-500/30 btn edit_record" title="${window.page.edit_btn}" data-id="${row.order_id}"><i class="bx bx-pencil "></i></a>`;
                                 button_csv = `<a href="${link_to_generate_csv_}?order_id=${row.order_id}" class="text-white transition-all duration-300 ease-linear bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 hover:text-white active:bg-red-600 active:border-red-600 active:text-white focus:bg-red-600 focus:border-red-600 focus:text-white focus:ring focus:ring-red-500/30 btn generate_csv" data-id="${row.order_id}" title="${window.page.delete_btn}"><i class="bx bx-file"></i></a>`;
                                 
-                                if (row.order_item_uploaded_img !== "") {
+                                // if (row.order_item_uploaded_img !== "") {
                                     button_download = `<a href="${link_to_download_image_}?order_track_id=${row.order_track_id}" class="text-white transition-all duration-300 ease-linear bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 hover:text-white active:bg-green-600 active:border-green-600 active:text-white focus:bg-green-600 focus:border-green-600 focus:text-white focus:ring focus:ring-green-500/30 btn download_image" data-id="${row.order_id}" title="${window.page.download_btn}"><i class="bx bx-download"></i></a>`;
             
-                                }
+                                // }
                             }
                             let button_view = '';
                             if (window.page.door != row.product_type){
