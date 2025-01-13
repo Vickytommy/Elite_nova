@@ -57,7 +57,7 @@ $(document).ready(function(){
                             let button_edit  ='';
                             let button_csv = '';
                             let button_download = '';
-                            // console.log('\n\nTHE ROW - \n\n', row, '\n\n')
+                            console.log('\n\nTHE ROW - \n\n', row.order_item_uploaded_img, '\n\n')
                             if ([1,2].includes(role_id)){ // if the person is admin
                                 button_edit = `<a href="${link_to_edit_order_}?order_id=${row.order_id}" class="text-white transition-all duration-300 ease-linear bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:text-white active:bg-blue-600 active:border-blue-600 active:text-white focus:bg-blue-600 focus:border-blue-600 focus:text-white focus:ring focus:ring-blue-500/30 btn edit_record" title="${window.page.edit_btn}" data-id="${row.order_id}"><i class="bx bx-pencil "></i></a>`;
                                 button_csv = `<a href="${link_to_generate_csv_}?order_id=${row.order_id}" class="text-white transition-all duration-300 ease-linear bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600 hover:text-white active:bg-red-600 active:border-red-600 active:text-white focus:bg-red-600 focus:border-red-600 focus:text-white focus:ring focus:ring-red-500/30 btn generate_csv" data-id="${row.order_id}" title="${window.page.delete_btn}"><i class="bx bx-file"></i></a>`;
