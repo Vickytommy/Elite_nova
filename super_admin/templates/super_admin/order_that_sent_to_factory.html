@@ -31,6 +31,7 @@
                 <input type="hidden" value='{% url "super_admin:viewOrderDetails" %}' id="link_to_view_order_">
                 <input type="hidden" value='{% url "super_admin:editDraftOrder" %}' id="link_to_edit_order_">
                 <input type="hidden" value='{% url "super_admin:exportOrderToCsv" %}' id="link_to_generate_csv_">
+                <input type="hidden" value='{% url "super_admin:downloadOrderImage" %}' id="link_to_download_image_">
                 <input type="hidden" name="role_id" id="role_id" value="{{ request.user.role_id }}">
              
 
@@ -79,7 +80,7 @@
                                 <thead>
                                     <tr>
                                         
-                                         <th class="border border-gray-300 dark:border-zink-50 bg-transparent"> {{ data|get:"order_date" }} </th>
+                                        <th class="border border-gray-300 dark:border-zink-50 bg-transparent"> {{ data|get:"order_date" }} </th>
                                         <th class="border border-gray-300 dark:border-zink-50 bg-transparent">{{ data|get:"last updated" }} </th>
                                         <th class="border border-gray-300 dark:border-zink-50 bg-transparent">{{ data|get:"order_id" }} </th>
                                         <th class="border border-gray-300 dark:border-zink-50 bg-transparent"> {{ data|get:"status" }} </th>
@@ -145,7 +146,7 @@
         view_btn:'{{ view_btn }}',
         edit_btn:'{{ edit_btn }}',
         delete_btn:'{{ delete_btn }}',
-
+        download_btn: '{{ download_btn }}',
     };
     window.page = mapping;
 </script>

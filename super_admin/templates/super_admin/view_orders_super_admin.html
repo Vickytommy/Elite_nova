@@ -29,7 +29,7 @@
                 <!-- <a href="{% url 'super_admin:addClient' %}" class="mb-4 text-white transition-all duration-300 ease-linear bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 hover:text-white active:bg-green-600 active:border-green-600 active:text-white focus:bg-green-600 focus:border-green-600 focus:text-white focus:ring focus:ring-green-500/30 btn">Drawers</a> -->
                 <input type="hidden" value='{% url "super_admin:viewSuperAdminOrders" %}' id="link_to_view_">
                 <input type="hidden" value='{% url "super_admin:viewOrderDetails" %}' id="link_to_view_order_">
-                    <input type="hidden" value='{% url "super_admin:editDraftOrder" %}' id="link_to_edit_order_">
+                <input type="hidden" value='{% url "super_admin:editDraftOrder" %}' id="link_to_edit_order_">
 
                 <input type="hidden" value='{% url "super_admin:CreateDoorOrder" %}' id="create_door_order_page_link">
                 <input type="hidden" value='{% url "super_admin:CreateFormicaOrder" %}' id="create_formica_order_page_link">
@@ -209,6 +209,7 @@
         view_btn:'{{ view_btn }}',
         edit_btn:'{{ edit_btn }}',
         check_btn:'{{ check_btn }}',
+        download_btn: '{{ download_btn }}',
     };
     window.page = mapping;
 </script>
