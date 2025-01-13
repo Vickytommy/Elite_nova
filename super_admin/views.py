@@ -1207,6 +1207,8 @@ def CreateDoorOrder(request):
         
         action = request.POST.get('action')
         step = request.POST.get('step')
+
+        print('\n\nTHE ATTRIBUTES (action, step) -- ', action, step, '\n\n')
         
         if action == "insert":
             if step == "step_1":
@@ -2179,6 +2181,7 @@ def CreateDoorOrder(request):
                 order_track_instance.save()
                 return JsonResponse ({'success':1,'msg':'All inserted', 'track':final_response})
     else:
+        print('\n\n ATTRIBUTES (method) GET REQUEST \n\n',)
         time_zone = settings.TIME_ZONE
         datetime_now=datetime.now(pytz.timezone(time_zone))
         translations = get_translation('create new order')
@@ -2250,7 +2253,7 @@ def load_draft_orders(request):
 
 @role_required(allowed_roles=['client','admin','super admin'])
 def editDraftOrder(request):
-    
+    print('IN, EDIT DRAFT ORDER...')
     translations = get_translation('create new order')
     Reservation = get_translation('Reservation')
     
@@ -2773,7 +2776,7 @@ def viewOrderDetails(request):
         knob_families = list(set(knob_families))
         global_dict['knob_families'] = ' ,'.join(knob_families)
         global_dict['viewOrderDetailsData'] = get_translation('View Order Details')
-        global_dict['total_quantity'], global_dict['total_meter'], global_dict['total_knob_width'] = total_quantity,round(total_meter,2), total_knob_width 
+        global_dict['total_quantity'], global_dict['total_meter'], global_dict['total_knob_width'] = total_quantity ,round(total_meter,2), total_knob_width/100
         global_dict['data_table'] = get_translation('Reservation')
         global_dict['login_data']=get_translation('log in')
         global_dict['data_products']=get_translation('products') 
