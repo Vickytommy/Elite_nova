@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .decorators import role_required
-from .models import EliteNovaUser, Role, Drawer, ColorKnob, Knob, Collection, OrderTrack, helperTables, DrawarOrder, ClapOrder, HingeOrder, Cards, OrderItems, OrderTrack, RelatedOrders, Translations
+from .models import EliteNovaUser, Role, Drawer, ColorKnob, Knob, Collection, OrderTrack, helperTables, DrawarOrder, ClapOrder, HingeOrder, Cards, OrderItems, RelatedOrders, Translations
 import json
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import make_password
@@ -21,6 +21,8 @@ from django.core.serializers import serialize
 from django.forms.models import model_to_dict
 import secrets
 from datetime import datetime
+import mimetypes
+import os
 from django.conf import settings
 import pytz
 from django.contrib.auth.signals import user_logged_in
@@ -954,7 +956,8 @@ def get_all_orders(role_id=None, user_id=None, order_status=None):
             u.employee_name,
             u.id,
             TO_CHAR(o.created_at, 'DD/MM/YYYY') AS formatted_created_at,
-            TO_CHAR(o.updated_at, 'DD/MM/YYYY') AS formatted_updated_at
+            TO_CHAR(o.updated_at, 'DD/MM/YYYY') AS formatted_updated_at,
+            i.order_item_uploaded_img
         FROM
             public.super_admin_ordertrack o
         LEFT JOIN
@@ -969,6 +972,10 @@ def get_all_orders(role_id=None, user_id=None, order_status=None):
             public.super_admin_elitenovauser  u
         ON
             o.user_id = u.id
+        LEFT JOIN
+            public.super_admin_orderitems  i
+        ON
+            o.order_track_id = i.order_track_id
         WHERE 
             1=1
     """
@@ -1207,8 +1214,6 @@ def CreateDoorOrder(request):
         
         action = request.POST.get('action')
         step = request.POST.get('step')
-
-        print('\n\nTHE ATTRIBUTES (action, step) -- ', action, step, '\n\n')
         
         if action == "insert":
             if step == "step_1":
@@ -2181,7 +2186,6 @@ def CreateDoorOrder(request):
                 order_track_instance.save()
                 return JsonResponse ({'success':1,'msg':'All inserted', 'track':final_response})
     else:
-        print('\n\n ATTRIBUTES (method) GET REQUEST \n\n',)
         time_zone = settings.TIME_ZONE
         datetime_now=datetime.now(pytz.timezone(time_zone))
         translations = get_translation('create new order')
@@ -2477,7 +2481,7 @@ def order_that_sent_to_factory(request):
         translations = get_translation('Reservation')
         context = {
             'data':translations,'company_name':company_name,'employ_name':employ_name,'employ_last_name':employ_last_name,
-            'view_btn':  "לצפיה בהזמנה" ,'edit_btn':"ערוך הזמנה",'delete_btn': "הורד אקסל להזמנה"
+            'view_btn':  "לצפיה בהזמנה" ,'edit_btn':"ערוך הזמנה",'delete_btn': "הורד אקסל להזמנה", 'download_btn': "הורד תמונת סיבים"
         }
         return render(request, 'super_admin/order_that_sent_to_factory.html', context=context)
     else:
@@ -3295,6 +3299,7 @@ def find_item_by_barcode(items, barcode):
         if item.get('order_item_collection_barcode') == barcode:
             return (True, item)
     return (False, {})
+
 @role_required(allowed_roles=['super admin'])
 def exportOrderToCsv(request):
     order_id = int(request.GET.get('order_id'))
@@ -3644,3 +3649,31 @@ def exportOrderToCsv(request):
             final_list.append(temp_dict)
     
     return render (request, 'super_admin/generate_order_csv.html', context = {'rows':final_list,'order_id':global_dict['order_id']})
+
+
+
+@role_required(allowed_roles=['super admin'])
+def downloadOrderImage(request):
+    order_track_id = int(request.GET.get('order_track_id'))
+    
+    # Fetch the order track
+    order_item = OrderItems.objects.filter(order_track_id=order_track_id).first()
+    if not order_item or not order_item.order_item_uploaded_img:
+        return order_that_sent_to_factory(request)
+    
+    # Get the file path
+    absolute_image_path = order_item.order_item_uploaded_img.path  # Use the .path attribute to get the file path
+
+    if not os.path.exists(absolute_image_path):
+        return order_that_sent_to_factory(request)
+    
+    # Determine the MIME type based on the file extension
+    mime_type, _ = mimetypes.guess_type(absolute_image_path)
+    if mime_type is None:
+        mime_type = "application/octet-stream"  # Fallback for unknown types
+    
+    # Serve the file
+    with open(absolute_image_path, "rb") as img_file:
+        response = HttpResponse(img_file.read(), content_type=mime_type)
+        response["Content-Disposition"] = f'attachment; filename="{os.path.basename(absolute_image_path)}"'
+        return response
