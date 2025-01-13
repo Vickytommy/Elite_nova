@@ -72,6 +72,8 @@ urlpatterns = [
     path("manageTranslations", views.manageTranslations, name = "manageTranslations"),
     # for csv export feature
     path("exportOrderToCsv",views.exportOrderToCsv, name = "exportOrderToCsv"),
+    # for downloading order image
+    path("downloadOrderImage",views.downloadOrderImage, name = "downloadOrderImage"),
 
 
 ]
