@@ -133,7 +133,7 @@ $(document).ready(function(){
 
                                                                                                                             <div class="md:col-span-2">
                                                                                                                                 <div>
-                                                                                                                                    <label for="" class="block font-medium text-gray-700 text-13 mb-2 dark:text-zink-200">${window.page.bo}</label>
+                                                                                                                                    <label for="" class="block font-medium text-gray-700 text-13 mb-2 dark:text-zink-200">${window.page.drawerBo}</label>
                                                                                                                                     <input class="w-full border py-2 px-3 text-13 rounded border-gray-400 placeholder:text-13 focus:border focus:border-gray-400 focus:ring-0 focus:outline-none text-gray-700 dark:bg-transparent placeholder:text-gray-600 dark:border-zink-50 dark:placeholder:text-zink-200" required name="bo" id="bo_${counter}">
                                                                                                                                 </div>
                                                                                                                             </div>
