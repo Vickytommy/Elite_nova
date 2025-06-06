@@ -3856,6 +3856,7 @@ $(document).ready(function(){
         var myObject = {
             [key]: data
         };
+        console.log('the subform -', data)
         cards = updateOrAppendObjectByKey(cards, key, myObject);
         console.log("After cleaning at line#941",cards);
         let success_msg = '';
@@ -4040,6 +4041,15 @@ $(document).ready(function(){
         return false;
     });
 
+    $(document).on('change', '[id^="door_operning_side_"]', function() {
+        var $select = $(this);
+        
+        // Remove 'selected' from all options
+        $select.find('option').removeAttr('selected');
+    
+        // Add 'selected' to the currently selected option
+        $select.find('option:selected').attr('selected', 'selected');
+    });
 
 
     
