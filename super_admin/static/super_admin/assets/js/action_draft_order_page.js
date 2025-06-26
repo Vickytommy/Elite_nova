@@ -1942,7 +1942,7 @@ $(document).ready(function(){
 
 
     $(document).on('change','.collection_barcode',function(){ //td
-        $(this).css('pointer-events','none');
+        // $(this).css('pointer-events','none');
         let collectionbarcode = $(this).find(':selected').text();
         //console.log("collectionbarcode=",collectionbarcode)
         let data_id  = $(this).attr('data-id');
