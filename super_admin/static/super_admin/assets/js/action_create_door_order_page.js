@@ -1061,7 +1061,7 @@ $(document).ready(function(){
 
 
     $(document).on('change','.collection_barcode',function(){ //td
-        $(this).css('pointer-events','none');
+        // $(this).css('pointer-events','none');
         let collectionbarcode = $(this).find(':selected').text();
         let data_id  = $(this).attr('data-id');
         let knob_decision = getValuesForKey(collectionbarcode, knobs_tracker);
