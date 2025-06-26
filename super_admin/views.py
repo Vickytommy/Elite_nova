@@ -3513,9 +3513,9 @@ def exportOrderToCsv(request):
                 multiplier_check = multiplier_check/1000000
                 if multiplier_check >  min_order_of_collection:
                     value =  float(multiplier_check) * float(card['card_quantity'])
-                    temp_dict["PartExt01"] = value
+                    temp_dict["PartExt01"] = round(value, 2)
                 else:
-                    temp_dict["PartExt01"] =  float(min_order_of_collection) * float(card['card_quantity'])
+                    temp_dict["PartExt01"] =  round(float(min_order_of_collection) * float(card['card_quantity']), 2)
 
 
             temp_dict['PartFRef'] = global_dict['order_id']
@@ -3628,9 +3628,9 @@ def exportOrderToCsv(request):
             multiplier_check = multiplier_check/1000000
             if multiplier_check >  min_order_of_collection:
                 value =  float(multiplier_check) * float(card['card_quantity'])
-                temp_dict["PartExt01"] = value
+                temp_dict["PartExt01"] = round(value, 2)
             else:
-                temp_dict["PartExt01"] =  float(min_order_of_collection) * float(card['card_quantity'])
+                temp_dict["PartExt01"] =  round(float(min_order_of_collection) * float(card['card_quantity']), 2)
 
             temp_dict['PartFRef'] = global_dict['order_id']
             temp_dict['PartFExt01'] = global_dict["order_track_response"]["client_order_id"]
