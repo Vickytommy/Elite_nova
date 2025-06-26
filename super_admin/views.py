@@ -3299,7 +3299,7 @@ def find_item_by_barcode(items, barcode):
             return (True, item)
     return (False, {})
 
-@role_required(allowed_roles=['super admin'])
+@role_required(allowed_roles=['super admin', 'admin'])
 def exportOrderToCsv(request):
     order_id = int(request.GET.get('order_id'))
     
