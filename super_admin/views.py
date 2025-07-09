@@ -944,41 +944,41 @@ def all_drawer_data(request):
 def get_all_orders(role_id=None, user_id=None, order_status=None):
     trans = get_translation('Reservation')
     sql_query = """
-        SELECT
-            o.*,
-            r.related_order_id,
-            r.past_order_id,
-            r.current_order_id,
-            r.created_at AS related_created_at,
-            r.updated_at AS related_updated_at,
-            ot.order_id AS past_order_id, 
-            u.company_name,
-            u.employee_name,
-            u.id,
-            TO_CHAR(o.created_at, 'DD/MM/YYYY') AS formatted_created_at,
-            TO_CHAR(o.updated_at, 'DD/MM/YYYY') AS formatted_updated_at,
-            i.order_item_uploaded_img
-        FROM
-            public.super_admin_ordertrack o
-        LEFT JOIN
-            public.super_admin_relatedorders r
-        ON
-            o.order_track_id = r.current_order_id
-        LEFT JOIN
-            public.super_admin_ordertrack ot
-        ON
-            r.past_order_id = ot.order_track_id
-        LEFT JOIN
-            public.super_admin_elitenovauser  u
-        ON
-            o.user_id = u.id
-        LEFT JOIN
-            public.super_admin_orderitems  i
-        ON
-            o.order_track_id = i.order_track_id
-        WHERE 
-            1=1
-    """
+        SELECT *
+        FROM (
+            SELECT DISTINCT ON (o.order_track_id)
+                o.*,
+                r.related_order_id,
+                r.past_order_id,
+                r.current_order_id,
+                r.created_at AS related_created_at,
+                r.updated_at AS related_updated_at,
+                ot.order_id AS past_order_id, 
+                u.company_name,
+                u.employee_name,
+                u.id,
+                TO_CHAR(o.created_at, 'DD/MM/YYYY') AS formatted_created_at,
+                TO_CHAR(o.updated_at, 'DD/MM/YYYY') AS formatted_updated_at,
+                i.order_item_uploaded_img
+            FROM
+                public.super_admin_ordertrack o
+            LEFT JOIN
+                public.super_admin_relatedorders r
+                ON o.order_track_id = r.current_order_id
+            LEFT JOIN
+                public.super_admin_ordertrack ot
+                ON r.past_order_id = ot.order_track_id
+            LEFT JOIN
+                public.super_admin_elitenovauser u
+                ON o.user_id = u.id
+            LEFT JOIN
+                public.super_admin_orderitems i
+                ON o.order_track_id = i.order_track_id
+            WHERE 
+                1=1
+                -- dynamic filters here
+    """  # keep open for filters
+
     if role_id:
         sql_query += f" AND u.role_id = {role_id}"
     if user_id:
@@ -986,8 +986,13 @@ def get_all_orders(role_id=None, user_id=None, order_status=None):
     if order_status:
         order_status = trans[order_status]
         sql_query += f" AND o.order_status = '{order_status}'"
+
+    sql_query += """
+            ORDER BY o.order_track_id, o.created_at DESC
+        ) AS filtered_orders
+        ORDER BY created_at DESC
+    """
     
-    sql_query += " ORDER BY o.created_at DESC"
     # print(sql_query)
     with connection.cursor() as cursor:
         cursor.execute(sql_query)
