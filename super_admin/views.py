@@ -992,7 +992,7 @@ def get_all_orders(role_id=None, user_id=None, order_status=None):
         ) AS filtered_orders
         ORDER BY created_at DESC
     """
-    
+
     # print(sql_query)
     with connection.cursor() as cursor:
         cursor.execute(sql_query)
@@ -1431,6 +1431,11 @@ def CreateDoorOrder(request):
                             knob_id = ''
                             knob_position_id=''
                             if knob_model_list[index]!='':
+                                # Print all knob_model values
+                                all_knobs = Knob.objects.all()
+                                print([k.knob_model for k in all_knobs])
+                                print('\n\nthe KNOB model - ', index, knob_model_list, '\n\n')
+                                
                                 knob_instance_query = Knob.objects.get(knob_model=knob_model_list[index])
                                 knob_dic = model_to_dict (knob_instance_query)
                                 knob_id = knob_dic['knob_id']
