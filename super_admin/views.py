@@ -1431,12 +1431,21 @@ def CreateDoorOrder(request):
                             knob_id = ''
                             knob_position_id=''
                             if knob_model_list[index]!='':
-                                # Print all knob_model values
-                                all_knobs = Knob.objects.all()
-                                print([k.knob_model for k in all_knobs])
-                                print('\n\nthe KNOB model - ', index, knob_model_list, '\n\n')
-                                
-                                knob_instance_query = Knob.objects.get(knob_model=knob_model_list[index])
+                                # # Print all knob_model values
+                                # all_knobs = Knob.objects.all()
+                                # print([k.knob_model for k in all_knobs])
+                                # print('\n\nthe KNOB model - ', index, knob_model_list, '\n\n')
+                                knob_instance_query = None
+
+                                # Try to get by knob_model first, then fallback to knob_id (int)
+                                try:
+                                    knob_instance_query = Knob.objects.get(knob_model=knob_model_list[index])
+                                except Knob.DoesNotExist:
+                                    try:
+                                        knob_instance_query = Knob.objects.get(knob_id=int(knob_model_list[index]))
+                                    except (Knob.DoesNotExist, ValueError):
+                                        knob_instance_query = None
+                                        
                                 knob_dic = model_to_dict (knob_instance_query)
                                 knob_id = knob_dic['knob_id']
                                 knob_position_id = knob_position_list[index]
