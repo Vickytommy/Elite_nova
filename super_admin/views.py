@@ -3535,7 +3535,7 @@ def exportOrderToCsv(request):
                     
                     str___ = ' '.join([f"xp{i}=={val}+PartEdge3Corr" for i, val in enumerate (values_list,1)])
                     hinge_order_door_opening_side_ = "2" if card['card_hinge'][0]['hinge_order_door_opening_side'] == "ימין" else "1"
-                    temp_dict['PartExt01'] = 'דלת ימין' if hinge_order_door_opening_side_ == "2" else 'דלת שמאל'
+                    temp_dict['PartExt02'] = 'דלת ימין' if hinge_order_door_opening_side_ == "2" else 'דלת שמאל'
                     temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]} flip={hinge_order_door_opening_side_}"
                 
                 elif card['card_clap_length'] == 1:
@@ -3583,6 +3583,17 @@ def exportOrderToCsv(request):
             temp_dict = {key:'' for key in keys}
             temp_dict['PartRef'] = card["card_notes"]
             temp_dict['Materiael'] = card["collection_barcode"]
+            
+            if card['card_drawer_length'] == 1:
+                temp_dict['PartExt02'] = 'חזית מגירה'
+            elif card['card_clap_length'] == 1:
+                temp_dict['PartExt02'] = 'קלאפה'
+            elif card['card_hinge_length'] == 1:
+                # temp_dict['PartExt02'] = 'צירים'
+                temp_dict['PartExt02'] = ''
+            else:
+                temp_dict['PartExt02'] = ''
+                          
             collection_queryset = Collection.objects.filter(collection_barcode=card["collection_barcode"]).first()
             c_dic = model_to_dict(collection_queryset)
             found, item = find_item_by_barcode(global_dict['order_item_response_list'], card["collection_barcode"])
@@ -3639,6 +3650,8 @@ def exportOrderToCsv(request):
                     nh_ = len(values_list)
                     str___ = ' '.join([f"xp{i}=={val}+PartEdge3Corr" for i, val in enumerate (values_list,1)])
                     hinge_order_door_opening_side_ = "2" if card['card_hinge'][0]['hinge_order_door_opening_side'] == "ימין" else "1"
+                    temp_dict['PartExt02'] = 'דלת ימין' if hinge_order_door_opening_side_ == "2" else 'דלת שמאל'
+                    
                     temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]} flip={hinge_order_door_opening_side_}"
                 elif card['card_clap_length'] == 1:
                     temp_dict["PartDrawing"] = f"Type_blum{card['card_clap'][0]['clap_claps_pr']}=1 lo={card['card_clap'][0]['clap_order_lo']} ro={card['card_clap'][0]['clap_order_ro']} to={card['card_clap'][0]['clap_order_bo']}"
