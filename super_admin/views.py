@@ -3453,10 +3453,11 @@ def exportOrderToCsv(request):
     final_list = []
     keys = [
         "PartRef", "Materiael", "GraiDirection", "PartL", "PartW", "Qty", 
-        "PartEdge1", "PartEdge2", "PartEdge3", "PartEdge4", "PartExt01", 
+        "PartEdge1", "PartEdge2", "PartEdge3", "PartEdge4", "PartExt01",
         "PartDrawing", "PartFRef", "PartFExt01", "PartFExt02", "PartFExt03", 
         "PartFExt04", "PartFExt05", "PartFExt06", "PartFExt07", "PartFExt08", 
-        "PartFExt09", "PartFExt10", "PartFExt11", "PartFExt12"
+        "PartFExt09", "PartFExt10", "PartFExt11", "PartFExt12",
+        "PartExt02",
     ]
     # print(global_dict['cards'])
     # print("Here")
@@ -3474,6 +3475,19 @@ def exportOrderToCsv(request):
             temp_dict['PartRef'] = card["card_notes"]
             temp_dict['Materiael'] = global_dict['order_item_response_list'][0]['order_item_collection_barcode']
             temp_dict["GraiDirection"] = ""
+
+
+            if card['card_drawer_length'] == 1:
+                temp_dict['PartExt02'] = 'חזית מגירה'
+            elif card['card_clap_length'] == 1:
+                temp_dict['PartExt02'] = 'קלאפה'
+            elif card['card_hinge_length'] == 1:
+                # temp_dict['PartExt02'] = 'צירים'
+                temp_dict['PartExt02'] = ''
+            else:
+                temp_dict['PartExt02'] = ''
+
+
             if (order_trans['keep_flow_height'] == global_dict['order_item_response_list'][0]['order_item_texture']):
                 #temp_dict["GraiDirection"] = "L"
                 temp_dict["GraiDirection"] = "1"
@@ -3491,6 +3505,7 @@ def exportOrderToCsv(request):
             temp_dict["PartEdge3"] = card["knob_model"] if card["helper_value_english"] == "lower" else c_dic["kant_code"]
             temp_dict["PartEdge4"] = card["knob_model"] if card["helper_value_english"] == "upper" else c_dic["kant_code"]
             temp_dict["PartExt01"] = ''
+            
             
             drawer_systems = {
                 "לגרבוקס כל המגירות החיצוניות": "legrabox",
@@ -3520,6 +3535,7 @@ def exportOrderToCsv(request):
                     
                     str___ = ' '.join([f"xp{i}=={val}+PartEdge3Corr" for i, val in enumerate (values_list,1)])
                     hinge_order_door_opening_side_ = "2" if card['card_hinge'][0]['hinge_order_door_opening_side'] == "ימין" else "1"
+                    temp_dict['PartExt01'] = 'דלת ימין' if hinge_order_door_opening_side_ == "2" else 'דלת שמאל'
                     temp_dict["PartDrawing"] = f"Type_{hinge_system[card['card_hinge'][0]['hinge_order_provider']]}=1 nh={nh_} yp={card['card_hinge'][0]['hinge_order_yp']} {str___} dty={temp_mapping[card['card_hinge'][0]['hinge_order_dty']]} flip={hinge_order_door_opening_side_}"
                 
                 elif card['card_clap_length'] == 1:
